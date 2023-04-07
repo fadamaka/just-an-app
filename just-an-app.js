@@ -49,13 +49,70 @@ async function main() {
       });
   }
 
-  //   await fetch(config.url + "action/find", options)
-  //     .then(async (response) => {
-  //       await response.json().then((r) => console.log(r));
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
+  if (process.argv.length > 3 && process.argv[2] === "find") {
+    let findOneBody = JSON.stringify({
+      collection: "pushups",
+      database: "self-growth",
+      dataSource: "Cluster0",
+      filter: { _id: { $oid: process.argv[3] } },
+    });
+
+    let findOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "api-key": config["api-key"],
+      },
+      body: findOneBody,
+    };
+
+    await fetch(config.url + "action/findOne", findOptions)
+      .then(async (response) => {
+        await response.json().then((r) => console.log(r));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  if (process.argv.length > 2 && process.argv[2] === "findAll") {
+    await fetch(config.url + "action/find", options)
+      .then(async (response) => {
+        await response.json().then((r) => console.log(r));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  if (process.argv.length > 4 && process.argv[2] === "updateOne") {
+    let updateOneBody = JSON.stringify({
+      collection: "pushups",
+      database: "self-growth",
+      dataSource: "Cluster0",
+      filter: { _id: { $oid: process.argv[3] } },
+      update: { $set: { date: process.argv[4] } },
+      upsert: false,
+    });
+
+    let updateOneOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "api-key": config["api-key"],
+      },
+      body: updateOneBody,
+    };
+
+    await fetch(config.url + "action/updateOne", updateOneOptions)
+      .then(async (response) => {
+        await response.json().then((r) => console.log(r));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   let aggrBody = JSON.stringify({
     collection: "pushups",
     database: "self-growth",
