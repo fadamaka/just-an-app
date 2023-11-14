@@ -29,7 +29,7 @@ async function main() {
       collection: "pushups",
       database: "self-growth",
       dataSource: "Cluster0",
-      document: { date: today, pushups: parseInt(process.argv[3]) },
+      document: { date: process.argv[4]||today, pushups: parseInt(process.argv[3]) },
     });
 
     let insertOptions = {
